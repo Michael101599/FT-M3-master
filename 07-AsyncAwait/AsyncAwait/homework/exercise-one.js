@@ -36,7 +36,7 @@ args.forEach(function(arg){
   if (problem) problem();
 });
 
-function problemA () {
+async function problemA () {
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
    *
    * A. loguea el poema uno stanza uno (ignorá errores)
@@ -50,11 +50,11 @@ function problemA () {
   });
 
   // AsyncAwait version
-
-
+  const stanza = await promisifiedReadFile('poem-one/stanza-01.txt')
+  blue(stanza);
 }
 
-function problemB () {
+async function problemB () {
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
    *
    * B. loggea el poema uno stanza dos y tres, en cualquier orden
@@ -73,10 +73,15 @@ function problemB () {
   });
 
   // AsyncAwait version
+  // const callStanzas = await Promise.all([promisifiedReadFile('poem-one/stanza-02.txt'), promisifiedReadFile('poem-one/stanza-03.txt')]);
+
+  // callStanzas.forEach(stanza => blue(stanza));
+
+  (await Promise.all([promisifiedReadFile('poem-one/stanza-02.txt'), promisifiedReadFile('poem-one/stanza-03.txt')])).forEach(stanza => blue(stanza))
 
 }
 
-function problemC () {
+async function problemC () {
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
    *
    * C. lee & loggea el poema uno stanza dos y *DESPUES* lee & loggea
@@ -99,10 +104,14 @@ function problemC () {
   });
 
   // AsyncAwait version
-
+  const stanza2 = await promisifiedReadFile('poem-one/stanza-02.txt');
+  blue(stanza2)
+  const stanza3 = await promisifiedReadFile('poem-one/stanza-03.txt');
+  blue(stanza3);
+  console.log('done')
 }
 
-function problemD () {
+async function problemD () {
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
    *
    * D. loggea el poema uno stanza cuatro o un error si llega a ocurrir
@@ -117,10 +126,15 @@ function problemD () {
   });
 
   // AsyncAwait version
-
+  try {
+    const stanza4 = await promisifiedReadFile('poem-one/wrong-file-name.txt')
+    blue(stanza4);
+  } catch (error) {
+    magenta(error);
+  }
 }
 
-function problemE () {
+async function problemE () {
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
    *
    * E. Lee y loggea el poema uno stanza tres y *DESPUES* lee y loggea la
@@ -142,10 +156,17 @@ function problemE () {
   });
 
   // AsyncAwait version
-
+  try {
+    const stanza2 = await promisifiedReadFile('poem-one/stanza-02.txt');
+    blue(stanza2)
+    const stanza3 = await promisifiedReadFile('poem-one/wrong-file-name.txt');
+    blue(stanza3);
+  } catch (error) {
+    magenta(error);
+  }
 }
 
-function problemF () {
+async function problemF () {
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
    *
    * F. Lee & loggea el poema uno stanza tres y *DESPUES* lee y loguea la
@@ -172,5 +193,13 @@ function problemF () {
   });
 
   // AsyncAwait version
-
+  try {
+    const stanza2 = await promisifiedReadFile('poem-one/stanza-03.txt');
+    blue(stanza2)
+    const stanza3 = await promisifiedReadFile('poem-one/wrong-file-name.txt');
+    blue(stanza3);
+  } catch (error) {
+    magenta(error);
+  }
+  console.log('done')
 }
